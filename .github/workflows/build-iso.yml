@@ -30,6 +30,9 @@ jobs:
 
       - name: Build ISO
         run: |
+          git clone https://gitea.artixlinux.org/artix/iso-profiles
+          mv /usr/share/artools/iso-profiles /tmp/
+          mv iso-profiles /usr/share/artools/
           ls /usr/share/artools/iso-profiles/
           buildiso -p plasma -q
           ls ~
