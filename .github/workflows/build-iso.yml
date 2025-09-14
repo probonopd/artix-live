@@ -34,12 +34,12 @@ jobs:
           mv /usr/share/artools/iso-profiles /tmp/
           mv iso-profiles /usr/share/artools/
           ls /usr/share/artools/iso-profiles/
-          buildiso -p plasma -q
+          buildiso -p lxqt -q
           mkdir -p ~/.config/artools/ ~/artools-workspace/
           cp /etc/artools/artools-base.conf /etc/artools/artools-iso.conf /etc/artools/artools-pkg.conf ~/.config/artools/
           cp -r /usr/share/artools/iso-profiles ~/artools-workspace/
           ls ~
-          buildiso -p plasma
+          buildiso -p lxqt
 
       - name: Find built ISO
         id: find_iso
