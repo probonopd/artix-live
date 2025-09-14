@@ -1,8 +1,7 @@
 name: Build and Release Artix Live ISO
 
 on:
-  release:
-    types: [published]
+  push:
 
 permissions:
   contents: write
