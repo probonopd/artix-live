@@ -20,10 +20,11 @@ jobs:
 
       - name: Setup pacman & update keys
         run: |
+          pacman-key --init
           pacman -Syu --noconfirm
           pacman -S --noconfirm artix-keyring
           pacman-key --populate artix
-
+          
       - name: Install build tools
         run: |
           pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools
