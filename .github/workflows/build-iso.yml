@@ -1,0 +1,54 @@
+name: Build and Release Artix Live ISO
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: write
+
+jobs:
+  build-iso:
+    runs-on: ubuntu-latest
+    container:
+      image: artixlinux/artixlinux:latest
+      options: --privileged
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup pacman & update keys
+        run: |
+          pacman -Syu --noconfirm
+          pacman -S --noconfirm artix-keyring
+          pacman-key --populate artix
+
+      - name: Install build tools
+        run: |
+          pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools
+
+      - name: Prepare workspace
+        run: |
+          mkdir -p /root/.config/artools
+          cp /etc/artools/artools-base.conf /root/.config/artools/
+          cp /etc/artools/artools-iso.conf /root/.config/artools/
+          cp /etc/artools/artools-pkg.conf /root/.config/artools/
+          mkdir -p /root/artools-workspace
+          cp -r /usr/share/artools/iso-profiles /root/artools-workspace/
+
+      - name: Build ISO
+        run: |
+          buildiso -p xfce-openrc
+
+      - name: Find built ISO
+        id: find_iso
+        run: |
+          echo "ISO_PATH=$(find /var/lib/artools/buildiso -name '*.iso' | head -n1)" >> $GITHUB_ENV
+
+      - name: Upload ISO to release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: ${{ env.ISO_PATH }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
