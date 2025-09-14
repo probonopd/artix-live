@@ -30,7 +30,10 @@ jobs:
 
       - name: Build ISO
         run: |
-          modprobe loop
+          find /usr/lib/modules/ | grep loop || true
+          find /usr/lib/modules/ | grep overlay || true
+          modprobe loop || true
+          lsmod
           git clone https://gitea.artixlinux.org/artix/iso-profiles
           mv /usr/share/artools/iso-profiles /tmp/
           mv iso-profiles /usr/share/artools/
