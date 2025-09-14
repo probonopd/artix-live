@@ -30,6 +30,7 @@ jobs:
 
       - name: Build ISO
         run: |
+          modprobe loop
           git clone https://gitea.artixlinux.org/artix/iso-profiles
           mv /usr/share/artools/iso-profiles /tmp/
           mv iso-profiles /usr/share/artools/
