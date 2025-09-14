@@ -30,8 +30,13 @@ jobs:
 
       - name: Prepare workspace
         run: |
+          find /etc/artools
           mkdir -p /root/.config/artools
-          cp /etc/artools/artools-base.conf /root/.config/artools/
+          if [ -f /etc/artools/artools-base.conf ]; then
+              cp /etc/artools/artools-base.conf /desired/destination/
+          else
+              echo "Warning: /etc/artools/artools-base.conf not found, skipping."
+          fi
           cp /etc/artools/artools-iso.conf /root/.config/artools/
           cp /etc/artools/artools-pkg.conf /root/.config/artools/
           mkdir -p /root/artools-workspace
