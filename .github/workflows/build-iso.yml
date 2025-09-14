@@ -31,9 +31,9 @@ jobs:
       - name: Build ISO
         run: |
           ls /usr/share/artools/iso-profiles/
-          buildiso -p xfce -i openrc -q
+          buildiso -p plasma -i openrc -q
           ls ~
-          buildiso -p xfce
+          buildiso -p plasma
 
       - name: Find built ISO
         id: find_iso
