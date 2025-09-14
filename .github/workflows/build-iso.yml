@@ -28,24 +28,9 @@ jobs:
         run: |
           pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools
 
-      - name: Prepare workspace
-        run: |
-          find /usr/share/artools/iso-profiles/
-          find /etc/artools
-          mkdir -p /root/.config/artools
-          if [ -f /etc/artools/artools-base.conf ]; then
-              cp /etc/artools/artools-base.conf /desired/destination/
-          else
-              echo "Warning: /etc/artools/artools-base.conf not found, skipping."
-          fi
-          cp /etc/artools/artools-iso.conf /root/.config/artools/
-          cp /etc/artools/artools-pkg.conf /root/.config/artools/
-          mkdir -p /root/artools-workspace
-          cp -r /usr/share/artools/iso-profiles /root/artools-workspace/
-
       - name: Build ISO
         run: |
-          buildiso -p xfce-openrc
+          buildiso -p xfce
 
       - name: Find built ISO
         id: find_iso
