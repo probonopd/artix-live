@@ -30,6 +30,8 @@ jobs:
 
       - name: Build ISO
         run: |
+          buildiso -p xfce -i openrc -q
+          ls ~
           buildiso -p xfce
 
       - name: Find built ISO
