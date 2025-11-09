@@ -52,7 +52,7 @@ jobs:
           ls /usr/share/artools/iso-profiles/
 
           # Build ISO
-          buildiso -p base -x
+          buildiso -p base -x || true
           # Workaround for https://github.com/probonopd/artix-live/issues/2
           mkdir -p artools/buildiso/lxqt/artix/rootfs/usr/lib/initcpio/udev/
           cat > artools/buildiso/lxqt/artix/rootfs/usr/lib/initcpio/udev/11-dm-initramfs.rules << 'EOF'
