@@ -35,7 +35,7 @@ jobs:
           
       - name: Install build tools
         run: |
-          pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools
+          pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools device-mapper
 
       - name: Build ISO
         run: |
