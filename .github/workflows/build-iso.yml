@@ -10,6 +10,7 @@ name: Build and Release Artix Live ISO
 
 on:
   push:
+  workflow_dispatch:
 
 permissions:
   contents: write
