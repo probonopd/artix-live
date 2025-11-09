@@ -1,10 +1,9 @@
 # Build Artix Live ISO on GitHub Actions
 # 
-# Fix for overlayfs issue: Mount workspace directory from host filesystem
-# into container and use it for artools build directory. This avoids nested
-# overlayfs (overlayfs on top of overlayfs) which is not supported by the
-# Linux kernel. The GitHub Actions workspace is on the host ext4 filesystem,
-# not overlayfs, so it can be used as an overlayfs upperdir.
+# Fix for overlayfs issue: Use GitHub Actions workspace directory for artools
+# build output. The workspace is mounted from the host filesystem (ext4) which
+# is not overlayfs. This avoids nested overlayfs (overlayfs on top of overlayfs)
+# which is not supported by the Linux kernel.
 
 
 name: Build and Release Artix Live ISO
@@ -21,8 +20,6 @@ jobs:
     container:
       image: artixlinux/artixlinux:latest
       options: --privileged
-      volumes:
-        - /home/runner/work:/workspace
 
     steps:
       - name: Checkout code
@@ -41,10 +38,11 @@ jobs:
 
       - name: Build ISO
         run: |
-          # Use workspace directory (host filesystem) instead of container overlayfs
+          # Use GitHub workspace directory (host filesystem) for artools build
+          # GitHub Actions mounts the workspace from host, which is not overlayfs
           # This avoids the nested overlayfs issue
-          mkdir -p /workspace/artools-build
-          ln -s /workspace/artools-build /var/lib/artools
+          mkdir -p $GITHUB_WORKSPACE/artools-build
+          ln -sf $GITHUB_WORKSPACE/artools-build /var/lib/artools
           
           # Clone and set up iso-profiles
           git clone https://gitea.artixlinux.org/artix/iso-profiles
@@ -64,7 +62,7 @@ jobs:
       - name: Find built ISO
         id: find_iso
         run: |
-          echo "ISO_PATH=$(find /workspace/artools-build/buildiso -name '*.iso' | head -n1)" >> $GITHUB_ENV
+          echo "ISO_PATH=$(find $GITHUB_WORKSPACE/artools-build/buildiso -name '*.iso' | head -n1)" >> $GITHUB_ENV
 
       - name: Upload ISO to release
         uses: softprops/action-gh-release@v1
