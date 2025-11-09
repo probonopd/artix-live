@@ -1,14 +1,16 @@
-# Preliminary conclusion:
-# It is not possible to build Artix Live ISOs
-# on GitHub Actions since it needs overlayfs
-# which possibly doesn't work properly
-# in Docker?
+# Build Artix Live ISO on GitHub Actions
+# 
+# Fix for overlayfs issue: Use GitHub Actions workspace directory for artools
+# build output. The workspace is mounted from the host filesystem (ext4) which
+# is not overlayfs. This avoids nested overlayfs (overlayfs on top of overlayfs)
+# which is not supported by the Linux kernel.
 
 
 name: Build and Release Artix Live ISO
 
 on:
   push:
+  workflow_dispatch:
 
 permissions:
   contents: write
@@ -33,18 +35,23 @@ jobs:
           
       - name: Install build tools
         run: |
-          pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools
+          pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools lvm2
 
       - name: Build ISO
         run: |
-          find /usr/lib/modules/ | grep loop || true
-          find /usr/lib/modules/ | grep overlay || true
-          modprobe loop || true
-          lsmod
+          # Use GitHub workspace directory (host filesystem) for artools build
+          # GitHub Actions mounts the workspace from host, which is not overlayfs
+          # This avoids the nested overlayfs issue
+          mkdir -p $GITHUB_WORKSPACE/artools-build
+          ln -sf $GITHUB_WORKSPACE/artools-build /var/lib/artools
+          
+          # Clone and set up iso-profiles
           git clone https://gitea.artixlinux.org/artix/iso-profiles
           mv /usr/share/artools/iso-profiles /tmp/
           mv iso-profiles /usr/share/artools/
           ls /usr/share/artools/iso-profiles/
+          
+          # Build ISO
           buildiso -p base         
           #buildiso -p lxqt -q
           #mkdir -p ~/.config/artools/ ~/artools-workspace/
@@ -56,7 +63,7 @@ jobs:
       - name: Find built ISO
         id: find_iso
         run: |
-          echo "ISO_PATH=$(find /var/lib/artools/buildiso -name '*.iso' | head -n1)" >> $GITHUB_ENV
+          echo "ISO_PATH=$(find $GITHUB_WORKSPACE/artools-build/buildiso -name '*.iso' | head -n1)" >> $GITHUB_ENV
 
       - name: Upload ISO to release
         uses: softprops/action-gh-release@v1
