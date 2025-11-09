@@ -1,8 +1,13 @@
 # artix-live
 
-Preliminary conclusion:
+Building Artix Live ISOs on GitHub Actions.
 
-It is not possible to build Artix Live ISOs
-on GitHub Actions since it needs overlayfs
-which possibly doesn't work properly
-in Docker?
+## Solution to overlayfs issue
+
+The ISO build process uses overlayfs to create the filesystem.
+GitHub Actions containers run on an overlayfs filesystem,
+and the Linux kernel doesn't support nested overlayfs
+(overlayfs on top of overlayfs).
+
+The solution is to mount the artools workspace (`/var/lib/artools`)
+on tmpfs, which can be used as an overlayfs upperdir.

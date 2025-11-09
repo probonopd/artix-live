@@ -1,8 +1,8 @@
-# Preliminary conclusion:
-# It is not possible to build Artix Live ISOs
-# on GitHub Actions since it needs overlayfs
-# which possibly doesn't work properly
-# in Docker?
+# Build Artix Live ISO on GitHub Actions
+# 
+# Fix for overlayfs issue: Use tmpfs for artools workspace
+# to avoid nested overlayfs (overlayfs on top of overlayfs)
+# which is not supported by the Linux kernel.
 
 
 name: Build and Release Artix Live ISO
@@ -37,14 +37,17 @@ jobs:
 
       - name: Build ISO
         run: |
-          find /usr/lib/modules/ | grep loop || true
-          find /usr/lib/modules/ | grep overlay || true
-          modprobe loop || true
-          lsmod
+          # Create tmpfs mount for artools workspace to avoid nested overlayfs
+          mkdir -p /var/lib/artools
+          mount -t tmpfs -o size=8G tmpfs /var/lib/artools
+          
+          # Clone and set up iso-profiles
           git clone https://gitea.artixlinux.org/artix/iso-profiles
           mv /usr/share/artools/iso-profiles /tmp/
           mv iso-profiles /usr/share/artools/
           ls /usr/share/artools/iso-profiles/
+          
+          # Build ISO
           buildiso -p base         
           #buildiso -p lxqt -q
           #mkdir -p ~/.config/artools/ ~/artools-workspace/
