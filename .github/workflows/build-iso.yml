@@ -51,20 +51,14 @@ jobs:
           mv iso-profiles /usr/share/artools/
           ls /usr/share/artools/iso-profiles/
 
+          # Build ISO
+          buildiso -p base -x
           # Workaround for https://github.com/probonopd/artix-live/issues/2
-          mkdir -p /usr/share/artools/iso-profiles/common/community/root-overlay/usr/lib/initcpio/udev/
-          cat > /usr/share/artools/iso-profiles/common/community/root-overlay/usr/lib/initcpio/udev/11-dm-initramfs.rules << 'EOF'
+          mkdir -p artools/buildiso/lxqt/artix/rootfs/usr/lib/initcpio/udev/
+          cat > artools/buildiso/lxqt/artix/rootfs/usr/lib/initcpio/udev/11-dm-initramfs.rules << 'EOF'
           SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION=="add|change", OPTIONS="db_persist"
           EOF
-
-          # Build ISO
-          buildiso -p base         
-          #buildiso -p lxqt -q
-          #mkdir -p ~/.config/artools/ ~/artools-workspace/
-          #cp /etc/artools/artools-base.conf /etc/artools/artools-iso.conf /etc/artools/artools-pkg.conf ~/.config/artools/
-          #cp -r /usr/share/artools/iso-profiles ~/artools-workspace/
-          #ls ~
-          #buildiso -p lxqt
+          buildiso -p base -sc
 
       - name: Find built ISO
         id: find_iso
