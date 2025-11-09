@@ -54,6 +54,10 @@ jobs:
           # Build ISO
           buildiso -p base -x || true
           # Workaround for https://github.com/probonopd/artix-live/issues/2
+          mkdir -p /usr/lib/initcpio/udev/
+          cat > /usr/lib/initcpio/udev/11-dm-initramfs.rules << 'EOF'
+          SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION=="add|change", OPTIONS="db_persist"
+          EOF
           mkdir -p artools/buildiso/lxqt/artix/rootfs/usr/lib/initcpio/udev/
           cat > artools/buildiso/lxqt/artix/rootfs/usr/lib/initcpio/udev/11-dm-initramfs.rules << 'EOF'
           SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION=="add|change", OPTIONS="db_persist"
