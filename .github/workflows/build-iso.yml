@@ -59,6 +59,8 @@ jobs:
           SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION=="add|change", OPTIONS="db_persist"
           EOF
           buildiso -p base -sc
+          buildiso -p base -bc
+          buildiso -p base -zc
 
       - name: Find built ISO
         id: find_iso
