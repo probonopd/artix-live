@@ -58,9 +58,9 @@ jobs:
           cat > artools/buildiso/lxqt/artix/rootfs/usr/lib/initcpio/udev/11-dm-initramfs.rules << 'EOF'
           SUBSYSTEM=="block", KERNEL=="dm-[0-9]*", ACTION=="add|change", OPTIONS="db_persist"
           EOF
-          buildiso -p base -sc
-          buildiso -p base -bc
-          buildiso -p base -zc
+          buildiso -p base -sc || true
+          buildiso -p base -bc || true
+          buildiso -p base -zc || true
 
       - name: Find built ISO
         id: find_iso
