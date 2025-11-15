@@ -90,6 +90,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
+          apt-get -y install wget
           wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
           ISO_PATH=$(find . -name '*.iso' | head -n1)
           bash upload.sh "$ISO_PATH"
