@@ -93,4 +93,5 @@ jobs:
           pacman -S --noconfirm wget
           wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
           ISO_PATH=$(find . -name '*.iso' | head -n1)
-          bash upload.sh "$ISO_PATH"
+          echo $ISO_PATH
+          bash -ex upload.sh "$ISO_PATH"
