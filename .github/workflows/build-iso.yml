@@ -46,11 +46,11 @@ jobs:
           ln -sf $GITHUB_WORKSPACE/artools-build /var/lib/artools
           
           # Clone and set up iso-profiles
-          git clone https://gitea.artixlinux.org/artix/iso-profiles
-          ( cd iso-profiles ; git checkout community )
-          mv /usr/share/artools/iso-profiles /tmp/
-          mv iso-profiles /usr/share/artools/
-          ls /usr/share/artools/iso-profiles/
+          #git clone https://gitea.artixlinux.org/artix/iso-profiles
+          ##( cd iso-profiles ; git checkout community )
+          #mv /usr/share/artools/iso-profiles /tmp/
+          #mv iso-profiles /usr/share/artools/
+          #ls /usr/share/artools/iso-profiles/
 
           # Try to pin Artix Linux
           mkdir -p /usr/share/artools/iso-profiles/common/root-overlay/etc
