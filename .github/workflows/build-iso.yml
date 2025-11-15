@@ -52,8 +52,8 @@ jobs:
           ls /usr/share/artools/iso-profiles/
 
           # Try to pin Artix Linux
-          mkdir -p /usr/share/artools/iso-profiles/common/community/live-overlay/etc/
-          cat > /usr/share/artools/iso-profiles/common/community/live-overlay/etc/pacman.conf << 'EOF'
+          mkdir -p /usr/share/artools/iso-profiles/common/root-overlay/etc
+          cat > /usr/share/artools/iso-profiles/common/root-overlay/etc/pacman.conf << 'EOF'
           #
           # /etc/pacman.conf
           #
@@ -64,35 +64,26 @@ jobs:
           Architecture = auto
           
           #
-          # Pin Artix Linux to a certain date
+          # Pin Arch Linux to a certain date
           #
-
-          [system]
-          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
-          
-          [world]
-          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
-          
-          [galaxy]
-          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
-          
-          [lib32]
-          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
           
           [core]
+          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
           Server = https://archive.archlinux.org/repos/2025/09/15/$repo/os/$arch
           
           [extra]
+          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
           Server = https://archive.archlinux.org/repos/2025/09/15/$repo/os/$arch
           EOF
-          cp /usr/share/artools/iso-profiles/common/community/live-overlay/etc/pacman.conf /usr/share/artools/pacman.conf
-
+          
           # Build ISO
-          buildiso -p base -x || true
-          # Edit rootfs here...
-          buildiso -p base -sc || true
-          buildiso -p base -bc || true
-          buildiso -p base -zc || true
+          buildiso -p base         
+          #buildiso -p lxqt -q
+          #mkdir -p ~/.config/artools/ ~/artools-workspace/
+          #cp /etc/artools/artools-base.conf /etc/artools/artools-iso.conf /etc/artools/artools-pkg.conf ~/.config/artools/
+          #cp -r /usr/share/artools/iso-profiles ~/artools-workspace/
+          #ls ~
+          #buildiso -p lxqt
 
       - name: Find built ISO
         id: find_iso
