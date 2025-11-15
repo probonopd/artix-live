@@ -88,7 +88,7 @@ jobs:
       - name: Find built ISO
         id: find_iso
         run: |
-          echo "ISO_PATH=$(find $GITHUB_WORKSPACE/iso/base/ -name '*.iso' | head -n1)" >> $GITHUB_ENV
+          echo "ISO_PATH=$(find $GITHUB_WORKSPACE -name '*.iso' | head -n1)" >> $GITHUB_ENV
 
       - name: Upload ISO to release
         uses: softprops/action-gh-release@v1
