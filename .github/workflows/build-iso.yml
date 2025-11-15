@@ -77,13 +77,7 @@ jobs:
           EOF
           
           # Build ISO
-          buildiso -p base         
-          #buildiso -p lxqt -q
-          #mkdir -p ~/.config/artools/ ~/artools-workspace/
-          #cp /etc/artools/artools-base.conf /etc/artools/artools-iso.conf /etc/artools/artools-pkg.conf ~/.config/artools/
-          #cp -r /usr/share/artools/iso-profiles ~/artools-workspace/
-          #ls ~
-          #buildiso -p lxqt
+          buildiso -p xfce
 
       - name: Upload ISO
         env:
@@ -92,6 +86,6 @@ jobs:
           set -e
           pacman -S --noconfirm wget
           wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
-          ISO_PATH=$(find /github/home/artools-workspace/iso/base/*.iso | head -n 1)
+          ISO_PATH=$(find /github/home/artools-workspace/iso/*/*.iso | head -n 1)
           echo $ISO_PATH
           bash -ex upload.sh "$ISO_PATH"
