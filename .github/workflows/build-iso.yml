@@ -85,14 +85,11 @@ jobs:
           #ls ~
           #buildiso -p lxqt
 
-      - name: Find built ISO
-        id: find_iso
-        run: |
-          echo "ISO_PATH=$(find $GITHUB_WORKSPACE -name '*.iso' | head -n1)" >> $GITHUB_ENV
-
-      - name: Upload ISO to release
-        uses: softprops/action-gh-release@v1
-        with:
-          files: ${{ env.ISO_PATH }}
+      - name: Upload ISO
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          wget -c https://github.com/probonopd/uploadtool/raw/master/upload.sh
+          ISO_PATH=$(find . -name '*.iso' | head -n1)
+          bash upload.sh "$ISO_PATH"
