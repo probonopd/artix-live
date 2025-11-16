@@ -39,14 +39,17 @@ jobs:
           # According to https://packages.artixlinux.org/packages/world/any/iso-profiles/ the files should be installed by the iso-profiles package
           pacman -Qi iso-profiles
           pacman -Ql iso-profiles
-          ls -lh '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/environment'
-          ls -lh '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/lightdm/lightdm-gtk-greeter.conf'
-          ls -lh '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/local.d'
-          ls -lh '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/pacman.conf'
-          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/environment
-          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/lightdm/lightdm-gtk-greeter.conf
-          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/local.d
-          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/pacman.conf
+
+          find /usr/share/artools/iso-profiles/ -xtype l || true  # Find broken symlinks
+
+          # Clone and set up iso-profiles
+          git clone https://gitea.artixlinux.org/artix/iso-profiles
+          #( cd iso-profiles ; git checkout community )
+          mv /usr/share/artools/iso-profiles /tmp/
+          mv iso-profiles /usr/share/artools/
+          #ls /usr/share/artools/iso-profiles/
+
+          find /usr/share/artools/iso-profiles/ -xtype l # Find broken symlinks
 
       - name: Build ISO
         run: |
@@ -55,13 +58,6 @@ jobs:
           # This avoids the nested overlayfs issue
           mkdir -p $GITHUB_WORKSPACE/artools-build
           ln -sf $GITHUB_WORKSPACE/artools-build /var/lib/artools
-          
-          # Clone and set up iso-profiles
-          #git clone https://gitea.artixlinux.org/artix/iso-profiles
-          ##( cd iso-profiles ; git checkout community )
-          #mv /usr/share/artools/iso-profiles /tmp/
-          #mv iso-profiles /usr/share/artools/
-          #ls /usr/share/artools/iso-profiles/
 
           ## Try to pin Artix Linux
           #mkdir -p /usr/share/artools/iso-profiles/common/root-overlay/etc
