@@ -37,8 +37,8 @@ jobs:
         run: |
           pacman -S --noconfirm artools iso-profiles git base-devel squashfs-tools dosfstools mtools lvm2
           # According to https://packages.artixlinux.org/packages/world/any/iso-profiles/ the files should be installed by the iso-profiles package
-          pacman -Qi iso-profiles
-          pacman -Ql iso-profiles
+          # pacman -Qi iso-profiles
+          # pacman -Ql iso-profiles
 
           find /usr/share/artools/iso-profiles/ -xtype l || true  # Find broken symlinks
 
@@ -50,6 +50,14 @@ jobs:
           #ls /usr/share/artools/iso-profiles/
 
           find /usr/share/artools/iso-profiles/ -xtype l # Find broken symlinks
+          file '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/environment'
+          file '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/lightdm/lightdm-gtk-greeter.conf'
+          file '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/local.d'
+          file '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/pacman.conf'
+          ls-lhR '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/environment'
+          ls-lhR '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/lightdm/lightdm-gtk-greeter.conf'
+          ls-lhR '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/local.d'
+          ls-lhR '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/pacman.conf'
 
       - name: Build ISO
         run: |
