@@ -52,31 +52,31 @@ jobs:
           #mv iso-profiles /usr/share/artools/
           #ls /usr/share/artools/iso-profiles/
 
-          # Try to pin Artix Linux
-          mkdir -p /usr/share/artools/iso-profiles/common/root-overlay/etc
-          cat > /usr/share/artools/iso-profiles/common/root-overlay/etc/pacman.conf << 'EOF'
+          ## Try to pin Artix Linux
+          #mkdir -p /usr/share/artools/iso-profiles/common/root-overlay/etc
+          #cat > /usr/share/artools/iso-profiles/common/root-overlay/etc/pacman.conf << 'EOF'
+          ##
+          ## /etc/pacman.conf
+          ##
+          ## See the pacman.conf(5) manpage for option and repository directives
           #
-          # /etc/pacman.conf
+          #[options]
+          #HoldPkg     = pacman glibc
+          #Architecture = auto
           #
-          # See the pacman.conf(5) manpage for option and repository directives
-          
-          [options]
-          HoldPkg     = pacman glibc
-          Architecture = auto
-          
+          ##
+          ## Pin Arch Linux to a certain date
+          ##
           #
-          # Pin Arch Linux to a certain date
+          #[core]
+          #Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
+          #Server = https://archive.archlinux.org/repos/2025/09/15/$repo/os/$arch
           #
-          
-          [core]
-          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
-          Server = https://archive.archlinux.org/repos/2025/09/15/$repo/os/$arch
-          
-          [extra]
-          Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
-          Server = https://archive.archlinux.org/repos/2025/09/15/$repo/os/$arch
-          EOF
-          
+          #[extra]
+          #Server = https://archive.artixlinux.org/repos/2025/09/15/$repo/os/$arch
+          #Server = https://archive.archlinux.org/repos/2025/09/15/$repo/os/$arch
+          #EOF
+          #
           # Build ISO
           buildiso -p xfce
 
