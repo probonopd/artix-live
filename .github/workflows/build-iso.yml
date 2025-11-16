@@ -43,10 +43,10 @@ jobs:
           ls -lh '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/lightdm/lightdm-gtk-greeter.conf'
           ls -lh '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/local.d'
           ls -lh '/usr/share/artools/iso-profiles/xfce/root-overlay/etc/pacman.conf'
-          ls -lhL /usr/share/artools/iso-profiles/xfce/root-overlay/etc/environment
-          ls -lhL /usr/share/artools/iso-profiles/xfce/root-overlay/etc/lightdm/lightdm-gtk-greeter.conf
-          ls -lhL /usr/share/artools/iso-profiles/xfce/root-overlay/etc/local.d
-          ls -lhL /usr/share/artools/iso-profiles/xfce/root-overlay/etc/pacman.conf
+          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/environment
+          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/lightdm/lightdm-gtk-greeter.conf
+          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/local.d
+          file /usr/share/artools/iso-profiles/xfce/root-overlay/etc/pacman.conf
 
       - name: Build ISO
         run: |
